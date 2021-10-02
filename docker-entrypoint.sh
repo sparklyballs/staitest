@@ -6,32 +6,33 @@ if [[ -n "${TZ}" ]]; then
   ln -snf "/usr/share/zoneinfo/$TZ" /etc/localtime && echo "$TZ" > /etc/timezone
 fi
 
-cd /stai-blockchain || exit 1
+cd /staicoin-blockchain || exit 1
 
 # shellcheck disable=SC1091
 . ./activate
 
-stai init --fix-ssl-permissions
+staicoin init
+# staicoin init --fix-ssl-permissions
 
 if [[ ${testnet} == 'true' ]]; then
    echo "configure testnet"
-   stai configure --testnet true
+   staicoin configure --testnet true
 fi
 
 if [[ ${keys} == "persistent" ]]; then
   echo "Not touching key directories"
 elif [[ ${keys} == "generate" ]]; then
   echo "to use your own keys pass them as a text file -v /path/to/keyfile:/path/in/container and -e keys=\"/path/in/container\""
-  stai keys generate
+  staicoin keys generate
 elif [[ ${keys} == "copy" ]]; then
   if [[ -z ${ca} ]]; then
     echo "A path to a copy of the farmer peer's ssl/ca required."
 	exit
   else
-  stai init -c "${ca}"
+  staicoin init -c "${ca}"
   fi
 else
-  stai keys add -f "${keys}"
+  staicoin keys add -f "${keys}"
 fi
 
 for p in ${plots_dir//:/ }; do
@@ -39,11 +40,11 @@ for p in ${plots_dir//:/ }; do
     if [[ ! $(ls -A "$p") ]]; then
         echo "Plots directory '${p}' appears to be empty, try mounting a plot directory with the docker -v command"
     fi
-    stai plots add -d "${p}"
+    staicoin plots add -d "${p}"
 done
 
 if [[ -n "${log_level}" ]]; then
-  stai configure --log-level "${log_level}"
+  staicoin configure --log-level "${log_level}"
 fi
 
 sed -i 's/localhost/127.0.0.1/g' "$CONFIG_ROOT/config/config.yaml"
