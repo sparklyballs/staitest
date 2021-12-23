@@ -61,10 +61,10 @@ SHELL ["/bin/bash", "-o", "pipefail", "-c"]
 # build package
 RUN \
 	if [ -z ${RELEASE+x} ]; then \
-	RELEASE=$(curl -u "${SECRETUSER}:${SECRETPASS}" -sX GET "https://api.github.com/repos/STATION-I/staicoin-blockchain/releases/latest" \
+	RELEASE=$(curl -u "${SECRETUSER}:${SECRETPASS}" -sX GET "https://api.github.com/repos/STATION-I/stai-blockchain/releases/latest" \
 	| jq -r ".tag_name"); \
 	fi \
-	&& git clone -b "${RELEASE}" https://github.com/STATION-I/staicoin-blockchain.git \
+	&& git clone -b "${RELEASE}" https://github.com/STATION-I/stai-blockchain.git \
 		/staicoin-blockchain \		
 	&& git submodule update --init mozilla-ca \
 	&& sh install.sh \
