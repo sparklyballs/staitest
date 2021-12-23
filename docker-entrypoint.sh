@@ -11,8 +11,7 @@ cd /staicoin-blockchain || exit 1
 # shellcheck disable=SC1091
 . ./activate
 
-staicoin init
-# staicoin init --fix-ssl-permissions
+staicoin init --fix-ssl-permissions
 
 if [[ ${testnet} == 'true' ]]; then
    echo "configure testnet"
@@ -45,6 +44,14 @@ done
 
 if [[ -n "${log_level}" ]]; then
   staicoin configure --log-level "${log_level}"
+fi
+
+if [[ -n "${peer_count}" ]]; then
+  staicoin configure --set-peer-count "${peer_count}"
+fi
+
+if [[ -n "${outbound_peer_count}" ]]; then
+  staicoin configure --set_outbound-peer-count "${outbound_peer_count}"
 fi
 
 sed -i 's/localhost/127.0.0.1/g' "$CONFIG_ROOT/config/config.yaml"
