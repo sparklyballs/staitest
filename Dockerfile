@@ -53,7 +53,7 @@ RUN \
 		/var/tmp/*
 
 # set workdir for build stage
-WORKDIR /staicoin-blockchain
+WORKDIR /stai-blockchain
 
 # set shell
 SHELL ["/bin/bash", "-o", "pipefail", "-c"]
@@ -65,7 +65,7 @@ RUN \
 	| jq -r ".tag_name"); \
 	fi \
 	&& git clone -b "${RELEASE}" https://github.com/STATION-I/stai-blockchain.git \
-		/staicoin-blockchain \		
+		/stai-blockchain \		
 	&& git submodule update --init mozilla-ca \
 	&& sh install.sh \
 	\
@@ -79,8 +79,8 @@ RUN \
 
 # set additional runtime environment variables
 ENV \
-	PATH=/staicoin-blockchain/venv/bin:$PATH \
-	CONFIG_ROOT=/root/.staicoin/mainnet
+	PATH=/stai-blockchain/venv/bin:$PATH \
+	CONFIG_ROOT=/root/.stai/mainnet
 
 # copy local files
 COPY docker-*.sh /usr/local/bin/
