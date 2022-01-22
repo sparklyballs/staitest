@@ -2,7 +2,7 @@ FROM python:3.9 AS stai_build
 
 # build arguments
 ARG DEBIAN_FRONTEND=noninteractive 
-ARG RELEASE
+ARG RELEASE="main"
 
 # install build dependencies
 RUN \
