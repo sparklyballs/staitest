@@ -4,6 +4,9 @@ FROM python:3.9 AS stai_build
 ARG DEBIAN_FRONTEND=noninteractive 
 ARG RELEASE
 
+# set shell
+SHELL ["/bin/bash", "-o", "pipefail", "-c"]
+
 # install build dependencies
 RUN \
 	apt-get update \
@@ -24,7 +27,7 @@ RUN \
 	RELEASE=$(curl -u "${SECRETUSER}:${SECRETPASS}" -sX GET "https://api.github.com/repos/STATION-I/stai-blockchain/releases/latest" \
 	| jq -r ".tag_name"); \
 	fi \
-	&& git clone --branch ${RELEASE} --recurse-submodules=mozilla-ca https://github.com/STATION-I/stai-blockchain.git . \
+	&& git clone --branch "${RELEASE}" --recurse-submodules=mozilla-ca https://github.com/STATION-I/stai-blockchain.git . \
 	&& /bin/sh ./install.sh
 
 FROM python:3.9-slim
